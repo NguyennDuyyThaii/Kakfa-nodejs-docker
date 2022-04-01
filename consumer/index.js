@@ -1,17 +1,42 @@
-import Kafka from 'node-rdkafka';
-import eventType from '../eventType.js';
+const { Kafka, logLevel } = require("kafkajs")
 
-var consumer = new Kafka.KafkaConsumer({
-  'group.id': 'kafka',
-  'metadata.broker.list': 'localhost:9092',
-}, {});
+const clientId = "my-app"
+const brokers = ["localhost:9092", "localhost:9094", "localhost:9095"]
+const topic = "message-log"
 
-consumer.connect();
+const kafka = new Kafka({
+	clientId,
+	brokers,
+	// logCreator: customLogger,
+	//logLevel: logLevel.DEBUG,
+})
 
-consumer.on('ready', () => {
-  console.log('consumer ready..')
-  consumer.subscribe(['test']);
-  consumer.consume();
-}).on('data', function(data) {
-  console.log(`received message: ${eventType.fromBuffer(data.value)}`);
-});
+// the kafka instance and configuration variables are the same as before
+
+// create a new consumer from the kafka client, and set its group ID
+// the group ID helps Kafka keep track of the messages that this client
+// is yet to receive
+const consumer = kafka.consumer({
+	groupId: clientId,
+	
+	// minBytes: 5,
+	// maxBytes: 1e6,
+	// // wait for at most 3 seconds before receiving new data
+	//maxWaitTimeInMs: 9000,
+})
+
+const consume = async () => {
+	// first, we wait for the client to connect and subscribe to the given topic
+	await consumer.connect()
+	await consumer.subscribe({ topic, fromBeginning: false })
+
+	await consumer.run({
+		// this function is called every time the consumer gets a new message
+		eachMessage: ({ message }) => {
+			// here, we just log the message to the standard output
+			console.log(`received message: ${message.value}`)
+		},
+	})
+}
+
+module.exports = consume

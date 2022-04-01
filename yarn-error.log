@@ -1,0 +1,61 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\ad-p21\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js
+
+PATH: 
+  C:\Program Files\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\xampp\php;C:\composer;C:\ProgramData\chocolatey\bin;C:\Program Files\Java\jdk-11.0.12\bin;D:\WORK\apache-maven-3.8.3\bin;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\nodejs\;C:\Program Files (x86)\Git\cmd;C:\Users\ad-p21\AppData\Local\Microsoft\WindowsApps;C:\Users\ad-p21\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\nodejs;C:\Users\ad-p21\AppData\Roaming\npm;C:\Users\ad-p21\AppData\Roaming\npm;C:\Program Files (x86)\CrossWorks\bin.exe;C:\Users\ad-p21\Downloads\kafka-3.1.0-src\bin;
+
+Yarn version: 
+  1.22.18
+
+Node version: 
+  16.14.2
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: D:\abc\node-kafka-producer-consumer\package.json: Unexpected token / in JSON at position 208
+      at JSON.parse (<anonymous>)
+      at C:\Users\ad-p21\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (C:\Users\ad-p21\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:310:30)
+      at C:\Users\ad-p21\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "kafka-producer-consumer",
+    "version": "1.0.0",
+    "description": "Created for [this YouTube tutorial](https://www.youtube.com/watch?v=EiDLKECLcZw).",
+    "main": "eventType.js",
+    "scripts": {
+      // "start:producer": "node producer/index.js",
+      // "start:consumer": "node consumer/index.js",
+      "start": "nodemon index.js"
+    },
+    "dependencies": {
+      "avsc": "^5.7.4",
+      "bindings": "^1.5.0",
+      "express": "^4.17.3",
+      "file-uri-to-path": "^1.0.0",
+      "kafkajs": "^1.16.0",
+      "nan": "^2.15.0",
+      "node-rdkafka": "^v2.12.0"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/kriscfoster/node-kafka-producer-consumer.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/kriscfoster/node-kafka-producer-consumer/issues"
+    },
+    "homepage": "https://github.com/kriscfoster/node-kafka-producer-consumer#readme"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

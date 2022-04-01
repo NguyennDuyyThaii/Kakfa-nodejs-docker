@@ -18,3 +18,21 @@ A kafka producer/consumer proof of concept using node.
 * `./scripts/create-topic.sh` - creates kafka topic.
 * `npm run start:producer` - starts producer.
 * `npm run start:consumer` - starts consumer.
+
+{
+  "name": "node-kafka-poc",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:producer": "node producer/index.js",
+    "start:consumer": "node consumer/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "avsc": "^5.6.2",
+    "node-rdkafka": "^2.10.1"
+  }
+}

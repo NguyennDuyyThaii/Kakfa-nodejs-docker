@@ -1,46 +1,73 @@
-import Kafka from 'node-rdkafka';
-import eventType from '../eventType.js';
+// import the `Kafka` instance from the kafkajs library
+const { Kafka } = require("kafkajs");
 
-const stream = Kafka.Producer.createWriteStream({
-  'metadata.broker.list': 'localhost:9092'
-}, {}, {
-  topic: 'test'
-});
+// the client ID lets kafka know who's producing the messages
+const clientId = "my-app";
+// we can define the list of brokers in the cluster
+const brokers = ["localhost:9092", "localhost:9094", "localhost:9095"];
+// this is the topic to which we want to write messages
+const topic = "message-log";
 
-stream.on('error', (err) => {
-  console.error('Error in our kafka stream');
-  console.error(err);
-});
+// initialize a new kafka client and initialize a producer from it
+const kafka = new Kafka({ clientId, brokers });
+const producer = kafka.producer();
 
-function queueRandomMessage() {
-  const category = getRandomAnimal();
-  const noise = getRandomNoise(category);
-  const event = { category, noise };
-  const success = stream.write(eventType.toBuffer(event));     
-  if (success) {
-    console.log(`message queued (${JSON.stringify(event)})`);
-  } else {
-    console.log('Too many messages in the queue already..');
-  }
-}
+// we define an async function that writes a new message each second
+const produce = async () => {
+  await producer.connect();
+  let i = 0;
+  let j = 0;
 
-function getRandomAnimal() {
-  const categories = ['CAT', 'DOG'];
-  return categories[Math.floor(Math.random() * categories.length)];
-}
+  // after the produce has connected, we start an interval timer
+  setInterval(async () => {
+    try {
+      // send a message to the configured topic with
+      // the key and value formed from the current value of `i`
+      await producer.send({
+        topic,
+        //acks: 1,
+        key: 'haha',
+        messages: [
+          {
+            key: String(i),
+            value: "this is message " + i,
+          },
+         
+        ],
+      });
 
-function getRandomNoise(animal) {
-  if (animal === 'CAT') {
-    const noises = ['meow', 'purr'];
-    return noises[Math.floor(Math.random() * noises.length)];
-  } else if (animal === 'DOG') {
-    const noises = ['bark', 'woof'];
-    return noises[Math.floor(Math.random() * noises.length)];
-  } else {
-    return 'silence..';
-  }
-}
+      // if the message is written successfully, log it and increment `i`
+      console.log("writes: ", i);
+      i++;
+    } catch (err) {
+      console.error("could not write message " + err);
+    }
+  }, 1000);
 
-setInterval(() => {
-  queueRandomMessage();
-}, 3000);
+  setInterval(async () => {
+    try {
+      // send a message to the configured topic with
+      // the key and value formed from the current value of `i`
+      await producer.send({
+        topic,
+        //acks: 1,
+        key: 'kaka',
+        messages: [
+          {
+            key: String(j),
+            value: "Thaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii " + j,
+          },
+         
+        ],
+      });
+
+      // if the message is written successfully, log it and increment `i`
+      console.log("writes kakakaka: ", j, "--------------------");
+      j++;
+    } catch (err) {
+      console.error("could not write message " + err);
+    }
+  }, 1000);
+};
+
+module.exports = produce;
