@@ -6,7 +6,8 @@ const topic = "message-log"
 
 const kafka = new Kafka({
 	clientId,
-	brokers,
+	brokers, 
+
 	// logCreator: customLogger,
 	//logLevel: logLevel.DEBUG,
 })
@@ -18,7 +19,6 @@ const kafka = new Kafka({
 // is yet to receive
 const consumer = kafka.consumer({
 	groupId: clientId,
-	
 	// minBytes: 5,
 	// maxBytes: 1e6,
 	// // wait for at most 3 seconds before receiving new data

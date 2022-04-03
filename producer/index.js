@@ -9,7 +9,7 @@ const brokers = ["localhost:9092", "localhost:9094", "localhost:9095"];
 const topic = "message-log";
 
 // initialize a new kafka client and initialize a producer from it
-const kafka = new Kafka({ clientId, brokers });
+const kafka = new Kafka({ clientId, brokers});
 const producer = kafka.producer();
 
 // we define an async function that writes a new message each second

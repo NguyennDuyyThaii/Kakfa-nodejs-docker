@@ -15,11 +15,12 @@ services:
     environment:
       - KAFKA_BROKER_ID=1
       - KAFKA_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_NUM_PARTITIONS=2
-      - KAFKA_CONFLUENT_TOPIC_REPLICATION_FACTOR=1
+      #- KAFKA_NUM_PARTITIONS=2
+      #- KAFKA_CONFLUENT_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
 
     depends_on:
       - zookeeper
@@ -32,11 +33,12 @@ services:
     environment:
       - KAFKA_BROKER_ID=2
       - KAFKA_LISTENERS=PLAINTEXT://:9094
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9094
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9094
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_NUM_PARTITIONS=2
-      - KAFKA_CONFLUENT_TOPIC_REPLICATION_FACTOR=1
+      # - KAFKA_CONFLUENT_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
       
     depends_on:
       - zookeeper
@@ -49,11 +51,24 @@ services:
     environment:
       - KAFKA_BROKER_ID=3
       - KAFKA_LISTENERS=PLAINTEXT://:9095
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9095
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9095
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_NUM_PARTITIONS=2
-      - KAFKA_CONFLUENT_TOPIC_REPLICATION_FACTOR=1
+      # - KAFKA_CONFLUENT_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
 
     depends_on:
       - zookeeper
+      
+  control-center:
+    image: confluentinc/cp-enterprise-control-center:latest
+    hostname: control-center
+    depends_on:
+      - kafka
+    ports:
+      - "9021:9021"
+    environment:
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:9092'
+      CONTROL_CENTER_REPLICATION_FACTOR: 1
+      PORT: 9021
